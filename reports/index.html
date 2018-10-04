@@ -1,0 +1,148 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Interactive Report</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="../dc.css" />
+    <link rel="stylesheet" type="text/css" href="../style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.0/moment.min.js"></script>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-white">
+        <a class="navbar-brand" href="/">
+            <img src="../logo.png" alt="insights">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01"
+            aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarColor01">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#" target="blank">
+                        <h5>Apparels and Shoes</h5>
+                        <!-- <img src="https://www.especialneeds.com/skin/frontend/rwd/default/images/main-logo.png" alt="especialneeds" height="50"/> -->
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+
+                <li class="nav-item active">
+                    <a class="nav-link text-primary" href="./product.html">
+                        <h5>Products Report</h5>
+                        <!-- <img src="https://elfukcdn.azureedge.net/images/gallery/e.l.f.logo.svg" alt="Elf Cosmetics" width="110" height="50"> -->
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+            </ul>
+            <ul class="navbar-nav my-2 my-lg-0 text-right">
+                <li class="nav-item">
+                    <p class="font-weight-bold mb-0">
+                        <span class="fa fa-calendar" style="color: #F58120"></span>&nbsp;
+                        <span id="month1">April - 2018</span>
+                    </p>
+                    </b>
+                    <p class="font-weight-light t">All data is based on Pacific Timezone </p>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="accordion" id="orderCount">
+                    <div class="card">
+                        <div class="card-header" id="headingOne">
+                            <h2 class=" mb-0">
+                                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    Order Count
+                                </button>
+                            </h2>
+                        </div>
+
+                        <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#orderCount">
+                            <div class="card-body">
+                               <p>Total Desktop Order Count: 6715</p>
+                               <p>Total Mobile Order Count: 7392</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                    <div class="accordion" id="revenue">
+                            <div class="card">
+                                <div class="card-header" id="headingFour">
+                                    <h2 class=" mb-0">
+                                        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="co#collapseTwo">
+                                            Total Sales
+                                        </button>
+                                    </h2>
+                                </div>
+        
+                                <div id="collapseTwo" class="collapse" aria-labelledby="headingFour" data-parent="#revenue">
+                                    <div class="card-body">
+                                       <p>Total Desktop Sales: $2,981,977</p>
+                                       <p>Total Mobile Sales: $4,438,771</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+            </div>
+            <div class="col-md-3">
+                    <div class="accordion" id="avgOrderItems">
+                            <div class="card">
+                                <div class="card-header" id="headingTwo">
+                                    <h2 class=" mb-0">
+                                        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="col#collapseThree">
+                                            Average Order Items
+                                        </button>
+                                    </h2>
+                                </div>
+        
+                                <div id="collapseThree" class="collapse" aria-labelledby="headingTwo" data-parent="#avgOrderItems">
+                                    <div class="card-body">
+                                       <p>Average Desktop Order Items: 22</p>
+                                       <p>Average Mobile Order Items: 39</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+            </div>
+            <div class="col-md-3">
+                    <div class="accordion" id="avgBagValue">
+                            <div class="card">
+                                <div class="card-header" id="headingThree">
+                                    <h2 class=" mb-0">
+                                        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseFour" aria-expanded="true" aria-controls="col#collapseFour">
+                                            Average Bag Value
+                                        </button>
+                                    </h2>
+                                </div>
+        
+                                <div id="collapseFour" class="collapse" aria-labelledby="headingThree" data-parent="#avgBagValue">
+                                    <div class="card-body">
+                                       <p>Average Desktop Bag Value: 444</p>
+                                       <p>Average Mobile Bag Value: 601</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="my-5 pt-5 text-muted text-center text-small">
+        <p class="mb-1">© 2017-2018 NetElixir Inc.</p>
+
+    </footer>
+</body>
+
+</html>

@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Products Report</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="../dc.css" />
+    <link rel="stylesheet" type="text/css" href="../style.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script>
+        $(window).on("load", function () {
+            $('select').addClass('custom-select')
+        })
+    </script>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-white">
+        <a class="navbar-brand" href="/">
+            <img src="../logo.png" alt="insights">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01"
+            aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarColor01">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="https://www.elfcosmetics.com/" target="blank">
+                        <h5>Apparels and Shoes</h5>
+                        <!-- <img src="https://elfukcdn.azureedge.net/images/gallery/e.l.f.logo.svg" alt="Elf Cosmetics" width="110" height="50"> -->
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+            </ul>
+            <ul class="navbar-nav my-2 my-lg-0 text-right">
+                <!-- <li class="nav-item">
+                            <p class="font-weight-bold mb-0">
+                                <span class="fa fa-calendar" style="color: #F58120"></span>&nbsp;
+                                <span id="month"></span>
+                            </p>
+                            </b>
+                            <p class="font-weight-light t">All data is based on Pacific Timezone </p>
+                        </li> -->
+            </ul>
+        </div>
+    </nav>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <!-- <div id="month" class="float-left"></div> -->
+                <a class="float-left allClear" href="/">go back</a>
+                <a class="float-right allClear" href="javascript:dc.filterAll(); dc.renderAll();">Reset All</a>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-md-2">
+                <div id="day"></div>
+            </div>
+            <div class="col-md-2">
+                <div id="device"></div>
+            </div>
+            <div class="col-md-2">
+                <div id="hour"></div>
+            </div>
+            <div class="col-md-2">
+                <div id="ppc"></div>
+            </div>
+            <div class="col-md-2">
+                <div id="user"></div>
+            </div>
+            <div class="col-md-2">
+                <div id="month"></div>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-md-6 font-weight-bold mt-lg-0 mt-3  pr-2 pl-2 pl-lg-3 mh">
+                <div class="col-12 lxr-box-shadow py-3 p-0 minh" id="geo">
+                    <h6 class="font-weight-normal text-uppercase ml-3">Geo Locations</h6>
+                    <p class="font-weight-light ml-3 font">by bag value </p>
+
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="col-12 lxr-box-shadow py-3 p-0 minh">
+                            <h6 class="font-weight-normal text-uppercase ml-3 ">Top Products</h6>
+                            <p class="font-weight-light ml-3 font">by bag value </p>
+                            <table id="pro" class="table">
+                                
+                            </table>
+                        </div> 
+                    </div>
+                    <!-- <div class="col-12" id="pro1">Bottom Products</div> -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="../d3.js"></script>
+    <script type="text/javascript" src="../crossfilter.js"></script>
+    <!-- <script type="text/javascript" src="./dc.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dc/2.1.0-dev/dc.js"></script>
+    <script type="text/javascript" src="../colorbrewer.js"></script>
+
+    <script type="text/javascript">
+
+        d3.json('product.json', function (err, data) {
+
+            data.forEach(function (d) {
+                d.day = d.day === 'Monday' ? d.day = '01. Monday' : d.day === 'Tuesday' ? d.DAY = '02. Tuesday' : d.day === 'Wednesday' ? d.day = '03. Wednesday' : d.day === 'Thursday' ? d.DAY = '04. Thursday' : d.day === 'Friday' ? d.day = '05. Friday' : d.day === 'Saturday' ? d.day = '06. Saturday' : d.day === 'Sunday' ? d.day = '07. Sunday' : console.log(d.day);
+                d.device = d.device === 'DESKTOP' ? d.device = 'Desktop' : 'Mobile';
+                // console.log(d.USER_TYPE)
+                d.newUser = d.newUser === false ? d.newUser = 'Returning' : 'New';
+                d.ppcType = d.ppcType === 'Others' ? d.ppcType = 'Others' : d.ppcType === 'Facebook' ? d.ppcType = 'Facebook' : d.ppcType === 'Google' ? d.ppcType = 'Google' : d.ppcType === 'Instagram' ? d.ppcType = 'Instagram' : d.ppcType === 'Pinterest' ? d.ppcType = 'Pinterest' : d.ppcType === 'Yahoo' ? d.ppcType = 'Yahoo' : d.ppcType = 'Bing';
+
+            });
+            // var pro = dc.dataTable("#pro");
+            var facts = crossfilter(data);
+
+            //day data
+            var dayDim = facts.dimension(function (d) { return d.day });
+            var dayGrp = dayDim.group();
+
+            //device data
+            var deviceDim = facts.dimension(function (d) { return d.device });
+            var deviceGrp = deviceDim.group();
+
+            //hour data
+            var hourDim = facts.dimension(function (d) { return +(d.hour) });
+            var hourGrp = hourDim.group();
+
+            //ppctype data
+            var ppcDim = facts.dimension(function (d) { return d.ppcType });
+            var ppcGrp = ppcDim.group();
+
+            //usertype data
+            var userDim = facts.dimension(function (d) { return d.newUser });
+            var userGrp = userDim.group();
+
+            //usertype data
+            var monthDim = facts.dimension(function (d) { return d.month });
+            var monthGrp = monthDim.group();
+
+            //geo data
+            var geoDim = facts.dimension(function (d) { return d.countryName });
+            var geoGrp = geoDim.group().reduceSum(function (d) { return d.quantity });
+
+            //products data
+            var proDim = facts.dimension(function (d) { return d.productName });
+            var proGrpdDim = proDim.group().reduce(
+                function (p, v) {
+                    // console.log('increment entered')
+                    ++p.number;
+                    p.total += +v.price;
+                    p.quantity += +v.quantity;
+                   
+                    return p;
+                },
+                function (p, v) {
+                    // console.log('decrement entered')
+                    --p.number;
+                    p.total -= +v.price;
+                    p.quantity -= +v.quantity;
+                   
+                    return p;
+                },
+                function () {
+                    // console.log('initias entered')
+                    return { number: 0, total: 0, quantity: 0 }
+                }),
+                rank = function (p) { return "rank" };
+                proGrpdDim.order(v => v.total);
+
+            //day select option
+            var day = dc.selectMenu('#day')
+                .dimension(dayDim)
+                .group(dayGrp)
+                .controlsUseVisibility(true)
+                .promptText('Day');
+            day.title(function (d) {
+                return d.key;
+            })
+            //device select
+            var device = dc.selectMenu("#device")
+                .dimension(deviceDim)
+                .group(deviceGrp)
+                .controlsUseVisibility(true)
+                .promptText('Device');
+            device.title(function (d) {
+                return d.key;
+            })
+
+            //hour select
+            var hour = dc.selectMenu("#hour")
+                .dimension(hourDim)
+                .group(hourGrp)
+                .controlsUseVisibility(true)
+                .promptText('Hour');
+            hour.title(function (d) {
+                return d.key;
+            })
+
+            //ppcType select
+            var ppc = dc.selectMenu("#ppc")
+                .dimension(ppcDim)
+                .group(ppcGrp)
+                .controlsUseVisibility(true)
+                .promptText('Campaign Type');
+            ppc.title(function (d) {
+                return d.key;
+            })
+
+            //userType select
+            var user = dc.selectMenu("#user")
+                .dimension(userDim)
+                .group(userGrp)
+                .controlsUseVisibility(true)
+                .promptText('User Type');
+            user.title(function (d) {
+                return d.key;
+            });
+
+            //products data table
+            var pro = dc.dataTable('#pro')
+                .dimension(proGrpdDim)
+                .group(function (d){ return 'Product | Price'})
+                .columns([function (d) { return d.key }, function (d) { return `$${d.value.total}`}])
+                .sortBy(function (d) { return d.value.total })
+                .order(d3.descending)
+                .size(5);
+               
+
+                
+                //  pro 
+                //     .dimension(proGrpdDim)
+                //     .group(function (d){ return 'Product | Quantity | Price'})
+                //     .columns([function (d) { return d.key }, function (d) { return d.value.quantity }, function (d) { return d.value.total }])
+                //     .sortBy(function (d) { return d.value.quantity })
+                //     .order(d3.descending)
+                //     .size(10);
+                //     pro.render();
+
+
+
+            var geo = dc.geoChoroplethChart('#geo');
+            //Geo chart
+            d3.json('../world_geo.json', function (err1, stateData) {
+                var projection = d3.geo
+                    .mercator()
+                    .scale(75)
+                    .translate([325, 150])
+                    .rotate([-12, 0]);
+                geo
+                    .width(625)
+                    .height(300)
+                    .dimension(geoDim)
+                    .group(geoGrp)
+                    .projection(projection)
+                    .colors(d3.scale.category10())
+                    .colorDomain([0, 3])
+                    .colorCalculator(function (d) {
+                        return d ? geo.colors()(d) : '#ccc';
+                    })
+                    .overlayGeoJson(stateData.features, 'state', function (d) {
+                        return d.properties.name;
+                    })
+                    .legend(
+                        dc
+                            .legend()
+                            .x(400)
+                            .y(10)
+                            .itemHeight(13)
+                            .gap(5)
+                    );
+                dc.renderAll();
+            });
+            dc.renderAll();
+            
+        });
+
+    </script>
+
+</body>
+
+</html>

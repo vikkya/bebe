@@ -1,0 +1,532 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Interactive Report</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="../dc.css" />
+	<link rel="stylesheet" type="text/css" href="../style.css">
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.0/moment.min.js"></script>
+	<script type="text/javascript">
+	var finTxt = {};
+$(document).ready(function() {
+  var finArr = [];
+  $('#geo').click(function() {
+    var txt;
+    txt = $('.selected').text();
+    // console.log(txt);
+    var txtSplit = [];
+    var finTxt = {};
+    var index = 0;
+    var output = [];
+    var txtSplit = txt.split(/(\d+)/);
+    // console.log(txtSplit)
+    var array_len = txtSplit.length;
+    // Looping until reached the last subset with 2 elements of array
+    while (index <= array_len - 2) {
+      finTxt = {};
+      // Get key for dict, which will be the first item of our set
+      var data_key = txtSplit[index];
+      // Get value for dict, which will be the second item of our set
+      var data_val = txtSplit[index + 1];
+      finTxt['country'] = data_key;
+      finTxt['count'] = data_val;
+      //Increasing index with 2
+      output.push(finTxt);
+      index = index + 2;
+    }
+    // console.log(output)
+    var result = output.reduce((a, b) => (a.y > b.y ? a : b));
+    var finName = result.country.slice(0, -2);
+    // console.log(finName);
+    $('#country').html('<span><i class="fa fa-map-marker"></i> ' + finName + '</span>');
+  });
+  $('.allClear').click(function() {
+    $('#country').html('<span><i class="fa fa-map-marker"></i> United States of America</span>');
+  });
+});
+</script>
+</head>
+
+<body>
+	<nav class="navbar navbar-expand-lg navbar-light bg-white">
+		<a class="navbar-brand" href="/">
+			<img src="../logo.png" alt="insights">
+		</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01"
+		 aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+
+		<div class="collapse navbar-collapse" id="navbarColor01">
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item active">
+					<a class="nav-link" href="#" target="blank">
+						<h5>Apparels and Shoes</h5>
+						<!-- <img src="https://www.especialneeds.com/skin/frontend/rwd/default/images/main-logo.png" alt="especialneeds" height="50"/> -->
+						<span class="sr-only">(current)</span>
+					</a>
+				</li>
+				
+          <li class="nav-item active">
+						<a class="nav-link text-primary" href="./product.html" >
+							<h5>Products Report</h5>
+							<!-- <img src="https://elfukcdn.azureedge.net/images/gallery/e.l.f.logo.svg" alt="Elf Cosmetics" width="110" height="50"> -->
+							<span class="sr-only">(current)</span>
+						</a>
+					</li>
+			</ul>
+			<ul class="navbar-nav my-2 my-lg-0 text-right">
+				<li class="nav-item">
+					<p class="font-weight-bold mb-0">
+						<span class="fa fa-calendar" style="color: #F58120"></span>&nbsp;
+						<span id="month1">January - 2018</span>
+					</p>
+					</b>
+					<p class="font-weight-light t">All data is based on Pacific Timezone </p>
+				</li>
+			</ul>
+		</div>
+	</nav>
+
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-12">
+				<!-- <div id="month" class="float-left"></div> -->
+				<a class="float-left allClear" href="/">go back</a>
+				<a class="float-right allClear" href="javascript:dc.filterAll(); dc.renderAll();">Reset All</a>
+			</div>
+		</div>
+		<div class="row mt-2">
+			<div class="col-md-3 font-weight-bold mt-lg-0 mt-3  pr-2 pl-2 pl-lg-3 mh ">
+				<div class="col-12 lxr-box-shadow py-3 p-0 minh">
+					<h6 class="font-weight-normal text-uppercase ml-3">High Value Persona</h6>
+					<p class="font-weight-light ml-3 font">high-value Persona for your business </p>
+					<div class="text-center">
+						<img src="../lady2.png" width="180" height="180" />
+						</br>
+						<b>Amy</b>
+						</br>
+						<b class="font-weight-light">Age: 25-35</b>
+						</br>
+						<b id="country"><i class="fa fa-map-marker"></i> United States of America</b>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-3 mt-lg-0 mt-3  pr-2 pl-2 pl-lg-3 mh minh ">
+				<div class="col-12 lxr-box-shadow py-3 p-0 minh">
+					<div class="font-weight-bold">
+						<h6 class="font-weight-normal text-uppercase ml-3">Key Takeaways</h6>
+						<!-- <p class="font-weight-light ml-3 font">by high-value Persona </p> -->
+					</div>
+					<div class="card-body ">
+						<p class="font2">
+							<i class="fa fa-shopping-cart" aria-hidden="true"></i> Her average bag value amounts to $275</p>
+						<p class="font2" ><i class="fa fa-car" aria-hidden="true"></i>She visits the website an average of 1.3 times per month.</p>
+						<p class="font2">
+							<i class="fa fa-shopping-bag" aria-hidden="true"></i> Her average spend during this period $
+							<span id="bag"></span>
+						</p>
+						<!-- <p>She's most likely to buy between 10AM - 12PM.</p> -->
+						<p class="font2">
+							<i class="fa fa-bullhorn" aria-hidden="true"></i> Chance of her buying from Paid search campaign is
+							<span id="deskPaid"></span>%.</p>
+						<!-- <p>She has 51.64% chance of buying on a Monday.</p> -->
+					</div>
+				</div>
+			</div>
+			<div class="col-md-3 mt-lg-0 mt-3 pr-2 pl-2 pl-lg-3 mh">
+				<div class="col-12 lxr-box-shadow py-3 p-0" id="pie">
+					<h6 class="font-weight-normal text-uppercase ml-3">Devices</h6>
+					<p class="font-weight-light ml-3 font">by number of Users </p>
+
+				</div>
+			</div>
+			<div class="col-md-3 mt-lg-0 mt-3 pr-2 pl-2 pl-lg-3 mh">
+				<div class="col-12 lxr-box-shadow py-3 p-0" id="bar">
+					<h6 class="font-weight-normal text-uppercase ml-3">Channels</h6>
+					<p class="font-weight-light ml-3 font">by last click Orders </p>
+				</div>
+			</div>
+		</div>
+		<div class="row mt-3">
+			<div class="col-md-3 mt-lg-0 mt-3 pr-2 pl-2 pl-lg-3 mh">
+				<div class="col-12 lxr-box-shadow py-3 p-0" id="dow">
+					<h6 class="font-weight-normal text-uppercase ml-3">Day of Week</h6>
+					<p class="font-weight-light ml-3 font">by last click Orders </p>
+				</div>
+			</div>
+			<div class="col-md-3 mt-lg-0 mt-3 pr-2 pl-2 pl-lg-3 mh">
+				<div class="col-12 lxr-box-shadow py-3 p-0" id="hod">
+					<h6 class="font-weight-normal text-uppercase ml-3">Hour of Day</h6>
+					<p class="font-weight-light ml-3 font">by last click Orders </p>
+				</div>
+			</div>
+			<div class="col-md-6 mt-lg-0 mt-3 pr-2 pl-2 pl-lg-3 mh">
+				<div class="col-12 lxr-box-shadow py-3 p-0" id="geo">
+					<h6 class="font-weight-normal text-uppercase ml-3">Geo Location</h6>
+					<p class="font-weight-light ml-3 font">by number of Users </p>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+
+	<script type="text/javascript" src="../d3.js"></script>
+	<script type="text/javascript" src="../crossfilter.js"></script>
+	<!-- <script type="text/javascript" src="./dc.js"></script> -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/dc/2.1.0-dev/dc.js"></script>
+	<script type="text/javascript" src="../colorbrewer.js"></script>
+	<script type="text/javascript">
+	function print_filter(filter) {
+  var f = eval(filter);
+  if (typeof f.length != 'undefined') {
+  } else {
+  }
+  if (typeof f.top != 'undefined') {
+    f = f.top(Infinity);
+  } else {
+  }
+  if (typeof f.dimension != 'undefined') {
+    f = f
+      .dimension(function(d) {
+        return '';
+      })
+      .top(Infinity);
+  } else {
+  }
+  console.log(
+    filter +
+      '(' +
+      f.length +
+      ') = ' +
+      JSON.stringify(f)
+        .replace('[', '[\n\t')
+        .replace(/}\,/g, '},\n\t')
+        .replace(']', '\n]')
+  );
+}
+
+//new data and new graphs
+d3.json('apparel.json', function(err, data) {
+  // console.log(data)
+  data.forEach(function(d) {
+    d.hour = d.hour <= 18 ? d.hour + 5 : d.hour - 19;
+    d.month = d.month === 11? d.month = '01. November' : d.month === 12? d.month = '01. December' : d.month === 1? d.month = '03. January' : d.month === 2 ? d.month = '04. February': d.month === 3? d.month = '05. March': d.month === 4? d.month='06. April': console.log(d.month);
+  });
+  var facts = crossfilter(data);
+  var all = facts.groupAll();
+  var userTotal = all
+    .reduceSum(function(d) {
+      return d.userCount;
+    })
+    .value();
+  var orderTotalU = all.reduceSum(function(d) {
+    return +d.orderCount;
+  }).value();
+  // print_filter(orderTotalU)
+  //device chart data
+  var pieDimension = facts.dimension(function(d) {
+    return d.device;
+  });
+  var pieGroup = pieDimension.group().reduceSum(function(d) {
+    return d.userCount;
+  });
+
+  //Channel chart data
+  var chDimension = facts.dimension(function(d) {
+    return d.ppcType;
+  });
+  var chGroup = chDimension.group().reduceSum(function(d) {
+    // return  Math.round(d.orderCount/orderTotalU);
+    return d.orderCount;
+  });
+// print_filter(chGroup)
+  //Day of week
+  var dowDimension = facts.dimension(function(d) {
+    return d.day;
+  });
+
+
+  var dowGroup = dowDimension.group().reduceSum(function(d) {
+    return d.orderCount;
+  });
+
+  //geo chart data
+  var countryDimension = facts.dimension(function(d) {
+    return d.countryName;
+  });
+  var countryGroup = countryDimension.group().reduceSum(function(d) {
+    return d.userCount;
+  });
+
+  //hour of day
+  var dateDimension = facts.dimension(function(d) {
+    return d.hour;
+  });
+  var dateGroup = dateDimension.group().reduceSum(function(d) {
+    return d.orderCount;
+  });
+  // print_filter(dateGroup)
+
+  //Month data
+  var monthDimension = facts.dimension(function(d) {
+    // return [d.month + ' ' + d.year];
+    return [d.month]
+  });
+  var monthGroup = monthDimension.group();
+
+  // print_filter(monthGroup)
+  //desktop
+  var deskDimension = facts.dimension(function(d) {
+    return d.ppcType;
+  });
+  
+  // var deskFilter = deskDimension.filterFunction(function(d){
+
+  // 	return d != "-" && d != "OTHERS";
+  // });
+  // print_filter(deskFilter);
+  var deskGroup1 = deskDimension.group();
+
+  var deskGroup = deskDimension.group().reduce(
+    function(p, c) {
+      // console.log(p.n)
+      ++p.n;
+      p.dtot += c.orderCount;
+      p.percent += (p.dtot/p.n)*(1/100);
+      return p;
+    },
+    function(p, c) {
+      --p.n;
+      p.dtot -= c.orderCount;
+      p.percent -= (p.dtot/p.n)*(1/100);
+      return p;
+    },
+    function() {
+      return { n: 0, dtot: 0, percent:0 };
+    }
+  );
+  // print_filter(deskGroup);
+  var deskAverage = function(a) {
+    return a.n ? a.dtot / a.n * (1 / 100) : 0;
+  };
+  //mobile
+  var mobGroup = facts.groupAll().reduce(
+    function(p, m) {
+      ++p.n;
+      p.dtot += m.orderCount;
+      return p;
+    },
+    function(p, m) {
+      --p.n;
+      p.dtot -= m.orderCount;
+      return p;
+    },
+    function() {
+      return { n: 0, dtot: 0 };
+    }
+  );
+  var mobAverage = function(a) {
+    return a.n ? a.dtot / a.n : 0;
+  };
+  //avg. bag value
+  var bagValueDimension = facts.dimension(function(d) {
+    return +d.price;
+  });
+  var bagValueGroup = facts.groupAll().reduce(
+    function(p, v) {
+      // console.log(p)
+      ++p.n;
+      p.tot += v.price;
+      return p;
+    },
+    function(p, v) {
+      --p.n;
+      p.tot -= v.price;
+      return p;
+    },
+    function() {
+      return { n: 0, tot: 0 };
+    }
+  );
+  // print_filter(bagValueGroup)
+  // console.log(d)
+  var average = function(d) {
+    return d.n ? d.tot / d.n : 0;
+  };
+
+  //devices chart
+  var pie = dc
+    .pieChart('#pie')
+    .width(300)
+    .height(260)
+    .cx(150)
+    .cy(130)
+    .title(function(d) {
+      return d.key + ': ' + Math.round(d.value / userTotal * 100) + '%';
+    })
+    .dimension(pieDimension)
+    .group(pieGroup)
+    .legend(
+      dc
+        .legend()
+        .x(10)
+        .y(5)
+    ) //default legend for moving in particular direction x y itemHeight gap can be given
+    .innerRadius(70) //for donut chart
+    .colors(d3.scale.category10()) //d3 color
+    .transitionDuration(1500)
+    .controlsUseVisibility(true);
+
+  //channel chart
+  var ch = dc
+    .barChart('#bar')
+    .width(300)
+    .height(260)
+    .margins({ top: 10, right: 0, bottom: 40, left: 50 })
+    .dimension(chDimension)
+    .group(chGroup)
+    .title(function(d) {
+      return d.key + ':' + Math.round(+d.value/orderTotalU *100) + '% orders';
+    })
+    .x(d3.scale.ordinal().domain(['Organic', 'Google', 'Facebook', 'Bing', 'Yahoo', 'Instagram', 'Pinterest']))
+    .xUnits(dc.units.ordinal)
+    // .xAxisLabel("Channel")
+    // .yAxisLabel("Total Orders")
+    .elasticY(true)
+    .controlsUseVisibility(true)
+
+    .xAxisPadding(500)
+    .transitionDuration(1500);
+  ch.xAxis().tickFormat(function(v) {
+    if (v !== 'Organic') {
+      return v + ' Ads';
+    } else {
+      return v;
+    }
+  });
+  ch.yAxis().tickFormat(d3.format('s'));
+
+  //day of week chart
+  var dow = dc
+    .barChart('#dow')
+    .width(300)
+    .height(300)
+    .dimension(dowDimension)
+    .group(dowGroup)
+    .title(function(d) {
+      return d.key + ':' + Math.round(+d.value/orderTotalU *100)  + ' % orders';
+    })
+    .x(d3.scale.ordinal().domain(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']))
+    .xUnits(dc.units.ordinal)
+    // .xAxisLabel("Day of Week")
+    // .yAxisLabel("Total Orders")
+    .colors(d3.scale.category10()) //d3 color
+    .transitionDuration(1500)
+    .elasticY(true)
+    .controlsUseVisibility(true)
+
+    .margins({ top: 10, right: 0, bottom: 40, left: 50 });
+  dow.yAxis().tickFormat(d3.format('s'));
+
+  //hour of day
+  var msPerHour = 1000 * 60 * 60;
+  var timeFormat = d3.time.format.utc('%H:%M');
+  var hod = dc
+    .lineChart('#hod')
+    .width(300)
+    .height(300)
+    .dimension(dateDimension)
+    .group(dateGroup)
+    .renderArea(true)
+    // .xAxisLabel("Hour of Day")
+    // .yAxisLabel('Total Orders')
+    .elasticY(true)
+    .controlsUseVisibility(true)
+    .x(d3.scale.linear().domain([0, 23]))
+    .margins({ top: 10, right: 10, bottom: 40, left: 40 })
+    .yAxis()
+    .tickFormat(d3.format('s'));
+  // .xAxis().tickFormat(function(h){return h + ":00";}).ticks(4);
+
+  //avg. bag value
+  var visits = dc
+    .numberDisplay('#bag')
+    .formatNumber(d3.format(',.0f'))
+    .valueAccessor(average)
+    .group(bagValueGroup);
+
+  //device paid camp details
+  var deskPaidCamp = dc
+    .numberDisplay('#deskPaid')
+    .formatNumber(d3.format('.3n'))
+    .valueAccessor(deskAverage)
+    .group(deskGroup);
+
+  //mobile paid camp details
+  var mobPaidCamp = dc
+    .numberDisplay('#mobPaid')
+    .formatNumber(d3.format('.3n'))
+    .valueAccessor(mobAverage)
+    .group(mobGroup);
+
+  //month select
+  var monthSelect = dc
+    .selectMenu('#month')
+    .dimension(monthDimension)
+    .group(monthDimension.group())
+    .promptText('Selected All')
+    // .order(function(a, b) {
+    //   // console.log(a)
+    //   return a.value > b.value ? 1 : b.value > a.value ? -1 : 0;
+    // })
+    .controlsUseVisibility(true);
+  monthSelect.title(function(d) {
+    return d.key;
+  });
+
+  var geo1 = dc.geoChoroplethChart('#geo');
+  //Geo chart
+  d3.json('../world_geo.json', function(err1, stateData) {
+    var projection = d3.geo
+      .mercator()
+      .scale(75)
+      .translate([325, 150])
+      .rotate([-12, 0]);
+    geo1
+      .width(625)
+      .height(300)
+      .dimension(countryDimension)
+      .group(countryGroup)
+      .projection(projection)
+      .colors(d3.scale.category10())
+      .colorDomain([0, 3])
+      .colorCalculator(function(d) {
+        return d ? geo1.colors()(d) : '#ccc';
+      })
+      .overlayGeoJson(stateData.features, 'state', function(d) {
+        return d.properties.name;
+      })
+      .legend(
+        dc
+          .legend()
+          .x(400)
+          .y(10)
+          .itemHeight(13)
+          .gap(5)
+      );
+    dc.renderAll();
+  });
+  dc.renderAll();
+});
+</script>
+	<footer class="my-5 pt-5 text-muted text-center text-small">
+		<p class="mb-1">© 2017-2018 NetElixir Inc.</p>
+
+	</footer>
+</body>
+
+</html>
