@@ -24,7 +24,13 @@
 .mh{
     max-height: 410px !important;
 }
+.mh1{
+  min-height: 550px !important;
+}
 .minh{
+  min-height: 389px !important;
+}
+.minh1{
   min-height: 355px !important;
 }
 .font{
@@ -60,6 +66,10 @@
   text-transform: capitalize;
 }
 tbody > :nth-child(1){
+  background-color: #007bff!important;
+  color: #fff;
+}
+thead > :nth-child(1){
   background-color: #007bff!important;
   color: #fff;
 }

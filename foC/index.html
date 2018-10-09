@@ -3,6 +3,7 @@
 
 <head>
   <meta charset="utf-8">
+  <title>Flow of Conversion</title>
   <style>
     body {
       margin: 0;
@@ -70,7 +71,7 @@
     </div>
   </nav>
   <div class="container-fluid">
-    <div class="row">
+    <div class="row mt-2">
       <div class="col-md-12 mt-lg-0 mt-3 pr-2 pl-2 pl-lg-3 mh">
         <div class="col-12 lxr-box-shadow py-3 p-0" id="flow">
           <h6 class="font-weight-normal text-uppercase ml-3">Flow of Conversion</h6>
@@ -170,7 +171,7 @@
       link.append("title")
         .text(function (d) {
           return d.source.name + " → " +
-            d.target.name + "\n" + format(d.value);
+            d.target.name + "\n" + format((d.value/10800)*100) + "%";
         });
 
       // add in the nodes
@@ -202,7 +203,8 @@
         })
         .append("title")
         .text(function (d) {
-          return d.name + "\n" + format(d.value);
+          // console.log(d);
+          return d.name + "\n" + format((d.value/10800)*100) + "%";
         });
 
       // add in the title for the nodes

@@ -1,0 +1,251 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>User Clustering</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="../style.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.css" />
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.js"></script>
+    <style>
+        .node {
+                cursor: pointer;
+            }
+    
+            .node:hover {
+                stroke: #000;
+                stroke-width: 1.5px;
+            }
+    
+            .node--root {
+                stroke: #777;
+                stroke-width: 2px;
+                fill: rgb(167, 157, 157)!important;
+            }
+    
+            .node--leaf {
+                fill: #797fbd;
+            }
+            /* .green {
+                fill: #4CAF50;
+            } */
+            /* .orange {
+                fill: #FF9800;
+            } */
+            .label {
+                font: 11px "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+                text-anchor: middle;
+                fill: white;
+                /* text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, -1px 0 0 #fff, 0 -1px 0 #fff; */
+            }
+    
+            .label,
+            .node--root,
+            .node--leaf {
+                pointer-events: none;
+            }
+            svg{
+                margin-left: 35px;
+            }
+            tbody > :nth-child(1){
+            background-color: rgba(0,0,0,.05)!important;
+            color: #000000;
+            }
+        </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-white">
+        <a class="navbar-brand" href="/">
+            <img src="../logo.png" alt="insights">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01"
+            aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarColor01">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#" target="blank">
+                        <h5>Apparel and Shoes</h5>
+                        <!-- <img src="https://elfukcdn.azureedge.net/images/gallery/e.l.f.logo.svg" alt="Elf Cosmetics" width="110" height="50"> -->
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+            </ul>
+            <ul class="navbar-nav my-2 my-lg-0 text-right">
+                <li class="nav-item">
+                    <p class="font-weight-bold mb-0">
+                        <span class="fa fa-calendar" style="color: #F58120"></span>&nbsp;
+                        <span id="month"></span>
+                    </p>
+                    </b>
+                    <p class="font-weight-light t">All data is based on Pacific Timezone </p>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container-fluid">
+        <div class="row mt-3">
+            <div class="col-md-6 mt-lg-0 mt-3 pr-2 pl-2 pl-lg-3 mh ">
+                <div class="col-12 lxr-box-shadow py-3 p-0" id="bubble" style="text-align: center">
+                    <h6 class="font-weight-normal text-uppercase ml-3">RFM Based Clustering</h6>
+                    <p class="font-weight-light ml-3 font">Recency, Frequency and Monetory</p>
+                    <svg width="450" height="450"></svg>
+                </div>
+            </div>
+            <div class="col-md-6 mt-lg-0 mt-3 pr-2 pl-2 pl-lg-3 mh">
+                <div class="col-12 lxr-box-shadow py-3 px-2 mh1">
+                <h4 class="font-weight-normal  ml-3">Top Customers</h4>
+                    <div id="clusterdiv"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script>
+        var svg = d3.select("svg"),
+            margin = 20,
+            diameter = +svg.attr("width"),
+            g = svg.append("g").attr("transform", "translate(" + diameter / 2 + "," + diameter / 2 + ")");
+
+        var color = d3.scaleLinear()
+            .domain([-1, 5])
+            .range(["hsl(152,80%,80%)", "hsl(228,30%,40%)"])
+            // .range(["#FFF", "#FFF"])
+            .interpolate(d3.interpolateHcl);
+
+        var pack = d3.pack()
+            .size([diameter - margin, diameter - margin])
+            .padding(2);
+        d3.csv("data.csv", function (err, data) {
+            // console.log(data)
+            var formatNumber = d3.format("s");
+            data.forEach(function(d){
+               d.monetory_value = d.monetory_value === '111' ? d.monetory_value = d.monetory_value : ''
+            })
+            var root1 = d3.nest()
+                .key(function (d) { return d.RFMScore })
+                // .key(function(d){return d.USER_ID})
+                .rollup(function (v) { return v.length })
+                .entries(data);
+            root1 = JSON.parse(JSON.stringify(root1).split('"value":').join('"size":'));
+            root1 = JSON.parse(JSON.stringify(root1).split('"key":').join('"name":'));
+
+            var root = { "name": 'cluster', children: root1 }
+            // console.log(root)
+            root = d3.hierarchy(root)
+                .sum(function (d) { return d.size; })
+                .sort(function (a, b) { return b.value - a.value; });
+
+            var focus = root,
+                nodes = pack(root).descendants(),
+                view;
+
+            var circle = g.selectAll("circle")
+                .data(nodes)
+                .enter().append("circle")
+                .attr("class", function (d) { return d.parent ? d.children ? `node` : `node node--leaf` : "node node--root"; })
+                .style("fill", function (d, i) { return d.children ? color(+d.data.name) : null; })
+                .on("click", function (d) { if (focus !== d) zoom(d), d3.event.stopPropagation(); });
+
+            var text = g.selectAll("text")
+                .data(nodes)
+                .enter().append("text")
+                .attr("class", "label")
+                .style("fill-opacity", function (d) { return d.parent === root ? 1 : 0; })
+                .style("display", function (d) { return d.parent === root ? "inline" : "none"; })
+                .text(function (d) { return d.data.name; });
+
+            var node = g.selectAll("circle,text");
+
+            svg
+                .style("background", "none")
+                .on("click", function () { zoom(root); });
+
+            zoomTo([root.x, root.y, root.r * 2 + margin]);
+
+            function zoom(d) {
+                var focus0 = focus; focus = d;
+
+                var transition = d3.transition()
+                    .duration(d3.event.altKey ? 7500 : 750)
+                    .tween("zoom", function (d) {
+                        var i = d3.interpolateZoom(view, [focus.x, focus.y, focus.r * 2 + margin]);
+                        return function (t) { zoomTo(i(t)); };
+                    });
+
+                transition.selectAll("text")
+                    .filter(function (d) { return d.parent === focus || this.style.display === "inline"; })
+                    .style("fill-opacity", function (d) { return d.parent === focus ? 1 : 0; })
+                    .on("start", function (d) { if (d.parent === focus) this.style.display = "inline"; })
+                    .on("end", function (d) { if (d.parent !== focus) this.style.display = "none"; });
+            }
+
+            function zoomTo(v) {
+                var k = diameter / v[2]; view = v;
+                node.attr("transform", function (d) { return "translate(" + (d.x - v[0]) * k + "," + (d.y - v[1]) * k + ")"; });
+                circle.attr("r", function (d) { return d.r * k; });
+            }
+
+            //table 
+            function tabulate(data, columns) {
+                var table = d3.select("#clusterdiv").append("table")
+                                .attr('class', 'table table-striped').attr('id', 'cluster'),
+                    thead = table.append("thead"),
+                    tbody = table.append("tbody");
+
+                // append the header row
+                thead.append("tr")
+                    .selectAll("th")
+                    .data(columns)
+                    .enter()
+                    .append("th")
+                    .attr('class', 'text-capitalize')
+                    .text(function (column) { return column; });
+
+                // create a row for each object in the data
+                var rows = tbody.selectAll("tr")
+                    .data(data)
+                    .enter()
+                    .append("tr");
+
+                // create a cell in each row for each column
+                var cells = rows.selectAll("td")
+                    .data(function (row) {
+                        return columns.map(function (column) {
+                            return { column: column, value: row[column] };
+                        });
+                    })
+                    .enter()
+                    .append("td")
+                    .html(function (d) {console.log(d); return d.value; });
+
+                return table;
+            }
+
+            // render the table
+            var peopleTable = tabulate(data, ["USER_ID", "recency", "frequency","monetory_value"]);
+        })
+    </script>
+    <script>
+        setTimeout(topCustomers, 9000)
+        function topCustomers(){
+            $(document).ready(function () {
+            $('#cluster').DataTable({
+                "aLengthMenu": [[7, 10, 15, 20, -1], [7, 10, 15, 20, "All"]],
+                "order": [[ 3, "desc" ]]
+            });
+        })
+        }
+    </script>
+</body>
+
+</html>
